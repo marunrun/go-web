@@ -6,7 +6,6 @@ import (
 	"net/http"
 )
 
-
 func main() {
 	// 加载路由
 	routes.Route()

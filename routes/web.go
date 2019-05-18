@@ -8,4 +8,5 @@ import (
 func Route() {
 	http.HandleFunc("/",controllers.HomeIndex) // 设置访问的路由
 	http.HandleFunc("/login", controllers.LoginIndex)
+	http.HandleFunc("/upload", controllers.UploadIndex)
 }

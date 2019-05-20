@@ -19,6 +19,7 @@ func InsertUser() {
 	var user Userinfo
 	user.Username = "mr"
 	user.Departname = "zxx"
+	user.Created = time.Date(2019,05,20,14,11,50,50,time.UTC)
 
 	id, err := o.Insert(&user)
 	if err == nil {
@@ -57,17 +58,37 @@ func UpdateUser(uid int)  {
 	}
 }
 
-func SelectUser(user Userinfo )  {
+func SelectUser(search map[string]string)  {
+
 
 	o := orm.NewOrm()
 
-	if uid := user.Uid; uid == 0 {
-		qs := o.QueryTable(user) // 返回 QuerySeter
-		_ = qs.Filter("username", user.Username).One(&user)
+	var user Userinfo
+
+	qs := o.QueryTable(user)
+	rows, err := qs.Filter("username","mr").All(&user)
+	if err == nil {
+		fmt.Println(rows)
 	}
+	fmt.Println(user)
 
 
-	//o := orm.NewOrm()
+	//for v,k := range search {
+	//	fmt.Println(v,k)
+	//	value,err := qs.Filter(v,k).All(&user)
+	//	fmt.Println(value,err)
+	//}
+
+
+	//if uid := user.Uid; uid == 0 {
+	//	qs := o.QueryTable(user) // 返回 QuerySeter
+	//	_ = qs.Filter("username", user.Username).One(&user)
+	//}
+	//
+
+
+
+	// 读取 one
 	//err := o.Read(&user)
 	//
 	//if err == orm.ErrNoRows {

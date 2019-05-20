@@ -6,7 +6,6 @@ import (
 	"go-web/Libs"
 	"html/template"
 	"io"
-	"log"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -45,14 +44,14 @@ func LoginIndex(w http.ResponseWriter, r *http.Request) {
 		//	ReturnJson(400, "水果选择有误", w)
 		//	return
 		//}
-		t, err := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
-		err = t.ExecuteTemplate(w, "T", template.HTML("<script>alert('you have been pwned')</script>"))
-		if err != nil {
-			log.Print(err)
-		}
-		fmt.Println("username:", template.HTMLEscapeString(r.Form.Get("username"))) //输出到服务器端
+		//t, err := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
+		//err = t.ExecuteTemplate(w, "T", template.HTML("<script>alert('you have been pwned')</script>"))
+		//if err != nil {
+		//	log.Print(err)
+		//}
+
 		fmt.Println("password:", template.HTMLEscapeString(r.Form.Get("password")))
-		template.HTMLEscape(w, []byte(r.Form.Get("username"))) //输出到客户端
+		//template.HTMLEscape(w, []byte(r.Form.Get("username"))) //输出到客户端
 		if len(r.Form["username"][0]) == 0 {
 			Libs.ReturnJson(400, "用户名必填", w)
 			return
@@ -62,6 +61,7 @@ func LoginIndex(w http.ResponseWriter, r *http.Request) {
 		//	ReturnJson(400,"用户名必须是中文",w)
 		//	return
 		//}
+
 		if m,_ := regexp.MatchString(`^[\w\.\_]{2,10}@(\w{1,})\.([a-z]{2,4})$`,r.Form.Get("username")); !m{
 			Libs.ReturnJson(400,"请填写正确的邮箱地址",w)
 			return
@@ -78,6 +78,16 @@ func LoginIndex(w http.ResponseWriter, r *http.Request) {
 		if age > 100 {
 			Libs.ReturnJson(400, "年龄太大", w)
 			return
+		}
+
+
+		expiration := time.Now()
+		expiration = expiration.AddDate(1, 0, 0)
+		cookie := http.Cookie{Name: "password", Value: r.Form.Get("password"), Expires: expiration}
+		http.SetCookie(w, &cookie)
+
+		for _, cookie := range r.Cookies() {
+			fmt.Fprint(w,cookie)
 		}
 
 	}

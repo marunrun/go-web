@@ -22,7 +22,7 @@ func LoginIndex(w http.ResponseWriter, r *http.Request) {
 		// md5 加密
 		_, _ = io.WriteString(h, strconv.FormatInt(crutime, 10))
 
-		token := fmt.Sprintf("%x",h.Sum(nil))
+		token := fmt.Sprintf("%x", h.Sum(nil))
 
 		v, _ := template.ParseFiles("views/login.html")
 		_ = v.Execute(w, token)
@@ -35,7 +35,6 @@ func LoginIndex(w http.ResponseWriter, r *http.Request) {
 		} else {
 
 		}
-
 
 		//fruit := r.Form.Get("fruit")
 		//
@@ -62,14 +61,13 @@ func LoginIndex(w http.ResponseWriter, r *http.Request) {
 		//	return
 		//}
 
-		if m,_ := regexp.MatchString(`^[\w\.\_]{2,10}@(\w{1,})\.([a-z]{2,4})$`,r.Form.Get("username")); !m{
-			Libs.ReturnJson(400,"请填写正确的邮箱地址",w)
+		if m, _ := regexp.MatchString(`^[\w._]{2,10}@(\w{1,})\.([a-z]{2,4})$`, r.Form.Get("username")); !m {
+			Libs.ReturnJson(400, "请填写正确的邮箱地址", w)
 			return
 		}
 
-
 		if m, _ := regexp.MatchString("^[0-9]+$", r.Form.Get("age")); !m {
-			Libs.ReturnJson(400,"年龄必须为数字",w)
+			Libs.ReturnJson(400, "年龄必须为数字", w)
 			return
 		}
 
@@ -80,14 +78,13 @@ func LoginIndex(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-
 		expiration := time.Now()
 		expiration = expiration.AddDate(1, 0, 0)
 		cookie := http.Cookie{Name: "password", Value: r.Form.Get("password"), Expires: expiration}
 		http.SetCookie(w, &cookie)
 
 		for _, cookie := range r.Cookies() {
-			fmt.Fprint(w,cookie)
+			_, _ = fmt.Fprint(w, cookie)
 		}
 
 	}

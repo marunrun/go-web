@@ -1,19 +1,11 @@
 package main
 
 import (
-	"github.com/astaxie/beego/orm"
-	"go-web/Libs"
-	"go-web/models"
-	"go-web/routes"
-	"log"
-	"net/http"
+	"fmt"
+	"go-web/controllers"
 )
-var globalSessions *Libs.Manager
 
-func init() {
-
-	globalSessions, _ = Libs.NewManager("memory","gosessionid",3600)
-
+/*func init() {
 
 	// 注册驱动
 	_ = orm.RegisterDriver("mysql", orm.DRMySQL)
@@ -26,9 +18,17 @@ func init() {
 	_ = orm.RunSyncdb("default", false, false)
 	orm.Debug = true
 
-}
+}*/
 
 func main() {
+
+	res := controllers.IsIp("127.0.0.1")
+
+	if res{
+		fmt.Println("true")
+		return
+	}
+	fmt.Println("false")
 
 	//models.InsertUser()
 	//models.CreatedUsers()
@@ -38,12 +38,12 @@ func main() {
 	//search["username"] = "mr"
 	//search["departname"] = "zxx"
 	//models.SelectUser(search)
-		//加载路由
-		routes.Route()
+	//加载路由
+	/*	routes.Route()
 		// 监听9090 端口
 		err := http.ListenAndServe(":9090", nil)
 		if err != nil {
 			log.Fatal("ListenAndServe", err)
-		}
+		}*/
 
 }

@@ -19,7 +19,7 @@ import "go-web/controllers"
 
 func main() {
 
-	controllers.WriteSomeThing()
+	controllers.IpTest()
 
 	//Libs.JsonTag()
 	//res := controllers.IsIp("127.0.0.1")

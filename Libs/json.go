@@ -4,15 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 type Server struct {
-	ServerName string
-	ServerIp   string
+	ServerName string `json:"serverName"`
+	ServerIp   string `json:"serverIp"`
 }
 
 type ServerSlice struct {
-	Servers []Server
+	Servers []Server `json:"servers"`
 }
 
 func ReturnJson(code int, msg string, w http.ResponseWriter) {
@@ -44,5 +45,33 @@ func JsonTest()  {
 	var f interface{}
 	_ = json.Unmarshal(b,&f)
 	fmt.Println(f)
+
+}
+
+func JsonTag()  {
+	type Server struct {
+		// ID 不会导出到JSON中
+		ID int `json:"-"`
+
+		// ServerName2 的值会进行二次JSON编码
+		ServerName  string `json:"serverName"`
+		ServerName2 string `json:"serverName2,string"`
+
+		// 如果 ServerIP 为空，则不输出到JSON串中
+		ServerIP   string `json:"serverIP,omitempty"`
+	}
+
+	s := Server {
+		ID:         3,
+		ServerName:  `Go "1.0" `,
+		ServerName2: `Go "1.0" `,
+		ServerIP:   ``,
+	}
+	b, _ := json.Marshal(s)
+	_, _ = os.Stdout.Write(b)
+	var str Server
+	_ = json.Unmarshal([]byte(b), &str)
+
+	fmt.Println(str)
 
 }

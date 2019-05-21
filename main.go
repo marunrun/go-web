@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"go-web/controllers"
-)
+import "go-web/controllers"
 
 /*func init() {
 
@@ -22,13 +19,16 @@ import (
 
 func main() {
 
-	res := controllers.IsIp("127.0.0.1")
+	controllers.WriteSomeThing()
 
-	if res{
-		fmt.Println("true")
-		return
-	}
-	fmt.Println("false")
+	//Libs.JsonTag()
+	//res := controllers.IsIp("127.0.0.1")
+
+	//if res{
+	//	fmt.Println("true")
+	//	return
+	//}
+	//fmt.Println("false")
 
 	//models.InsertUser()
 	//models.CreatedUsers()

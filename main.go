@@ -1,6 +1,10 @@
 package main
 
-import "go-web/controllers"
+import (
+	"go-web/routes"
+	"log"
+	"net/http"
+)
 
 /*func init() {
 
@@ -17,33 +21,16 @@ import "go-web/controllers"
 
 }*/
 
+
+
 func main() {
 
-	controllers.IpTest()
-
-	//Libs.JsonTag()
-	//res := controllers.IsIp("127.0.0.1")
-
-	//if res{
-	//	fmt.Println("true")
-	//	return
-	//}
-	//fmt.Println("false")
-
-	//models.InsertUser()
-	//models.CreatedUsers()
-	//models.UpdateUser(1)
-	//search := map[string]string{}
-	//
-	//search["username"] = "mr"
-	//search["departname"] = "zxx"
-	//models.SelectUser(search)
 	//加载路由
-	/*	routes.Route()
-		// 监听9090 端口
-		err := http.ListenAndServe(":9090", nil)
-		if err != nil {
-			log.Fatal("ListenAndServe", err)
-		}*/
+	routes.Route()
+	// 监听9090 端口
+	err := http.ListenAndServe(":9090", nil)
+	if err != nil {
+		log.Fatal("ListenAndServe", err)
+	}
 
 }

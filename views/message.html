@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天</title>
+</head>
+<body>
+<div>
+    <textarea name="text" id="text" cols="100" rows="10"></textarea>
+</div>
+<form action="">
+    <p>
+        Username : <input type="text" name="username" id="username">
+    </p>
+    <p>
+        email : <input type="email" name="email" id="email">
+    </p>
+    <p>
+        Message : <input type="text" name="message" id="message">
+    </p>
+    <button type="submit" id="sendMessage">Send Message</button>
+</form>
+<script type="text/javascript">
+    var sock = null;
+    var wsuri = "ws://127.0.0.1:9090/ws";
+    window.onload = function () {
+        console.log("onload");
+
+        sock = new WebSocket(wsuri);
+
+        sock.onopen = function () {
+            console.log("connected to " + wsuri);
+        };
+
+        sock.onclose = function (e) {
+            console.log("connection closed " + e.code);
+        };
+
+        sock.onmessage = function (e) {
+            console.log("message received:" + e.data);
+            var data = JSON.parse(e.data);
+            var msg = '';
+            msg += data.username;
+            msg += data.email + ': ';
+            msg += data.message;
+            var text = '';
+            text += document.getElementById("text").innerHTML;
+            console.log(text);
+            text += msg+ "";
+            document.getElementById("text").innerText = text;
+
+        };
+
+        document.getElementById('sendMessage').onclick = function (e) {
+            e.preventDefault();
+            var username = document.getElementById('username').value;
+            var email = document.getElementById('email').value;
+            var message = document.getElementById("message").value;
+
+            var json = {
+                "email": email,
+                "username": username,
+                "message":message
+            };
+            console.log(JSON.stringify(json));
+            sock.send(JSON.stringify(json));
+        };
+    }
+</script>
+
+
+</body>
+</html>

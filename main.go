@@ -1,9 +1,10 @@
 package main
 
 import (
-	"go-web/routes"
-	"log"
-	"net/http"
+	"go-web/controllers"
+	"net"
+	"net/rpc"
+	"net/rpc/jsonrpc"
 )
 
 /*func init() {
@@ -25,12 +26,29 @@ import (
 
 func main() {
 
-	//加载路由
+	arith := new(controllers.Arith)
+	rpc.Register(arith)
+
+
+	tcpAddress, err := net.ResolveTCPAddr("tcp",":1234")
+	controllers.CheckError(err)
+
+	listener, err := net.ListenTCP("tcp",tcpAddress)
+	controllers.CheckError(err)
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			continue
+		}
+		jsonrpc.ServeConn(conn)
+	}
+
+/*	//加载路由
 	routes.Route()
 	// 监听9090 端口
 	err := http.ListenAndServe(":9090", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe", err)
 	}
-
+*/
 }

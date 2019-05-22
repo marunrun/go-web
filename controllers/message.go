@@ -39,7 +39,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 		err := conn.ReadJSON(&msg)
 		if err != nil {
-			log.Printf("line 44 error: %v", err)
+			log.Printf("error: %v", err)
 			delete(clients,conn)
 			conn.Close()
 			return
@@ -57,7 +57,7 @@ func handleMessages(msg Message) {
 	for client := range clients {
 		err := client.WriteJSON(msg)
 		if err != nil {
-			log.Printf("line 61 error: %v", err)
+			log.Printf("error: %v", err)
 		}
 	}
 	fmt.Println(clients)

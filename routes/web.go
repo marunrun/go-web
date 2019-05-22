@@ -11,4 +11,5 @@ func Route() {
 	http.HandleFunc("/upload", controllers.UploadIndex)
 	http.HandleFunc("/message", controllers.GetMessage)
 	http.HandleFunc("/ws", controllers.Handle)
+	http.HandleFunc("/rpc",controllers.ListenRpc)
 }

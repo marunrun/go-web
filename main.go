@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go-web/controllers"
-	"net"
-	"net/rpc"
-	"net/rpc/jsonrpc"
+	"fmt"
+	"html"
+	"log"
+	"net/http"
 )
 
 /*func init() {
@@ -21,34 +21,19 @@ import (
 	orm.Debug = true
 
 }*/
+func fooHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+}
 
 
 
 func main() {
+	http.HandleFunc("/foo", fooHandler)
 
-	arith := new(controllers.Arith)
-	rpc.Register(arith)
+	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+	})
 
+	log.Fatal(http.ListenAndServe(":8080", nil))
 
-	tcpAddress, err := net.ResolveTCPAddr("tcp",":1234")
-	controllers.CheckError(err)
-
-	listener, err := net.ListenTCP("tcp",tcpAddress)
-	controllers.CheckError(err)
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			continue
-		}
-		jsonrpc.ServeConn(conn)
-	}
-
-/*	//加载路由
-	routes.Route()
-	// 监听9090 端口
-	err := http.ListenAndServe(":9090", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe", err)
-	}
-*/
 }

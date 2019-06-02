@@ -1,7 +1,6 @@
 package models
 
 import (
-	"reflect"
 	"time"
 )
 
@@ -14,8 +13,4 @@ type Blog struct {
 
 func GetLink()  {
 	
-}
-
-func GetAll() (blogs []Blog)  {
-
 }

@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"fmt"
+	"html/template"
 	"net/http"
 )
 
 func HomeIndex(w http.ResponseWriter, r *http.Request) {
-	_ = r.ParseForm()
-	_, _ = fmt.Fprintln(w, "Welcome to my Home !")
+	t, _ := template.ParseFiles("views/message.html")
+	_ = t.Execute(w, nil)
 }

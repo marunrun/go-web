@@ -7,5 +7,4 @@ type IndexController struct {
 }
 
 func (this *IndexController) Get() {
-	this.Data["blogs"] =
 }

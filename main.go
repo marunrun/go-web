@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"html"
+	"go-web/routes"
 	"log"
 	"net/http"
 )
@@ -21,19 +20,13 @@ import (
 	orm.Debug = true
 
 }*/
-func fooHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
-}
-
-
 
 func main() {
-	http.HandleFunc("/foo", fooHandler)
 
-	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
-	})
+	routes.Route()
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
-
+	err := http.ListenAndServe(":9090", nil)
+	if err != nil {
+		log.Fatal("ListenAndServe", err)
+	}
 }

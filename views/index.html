@@ -8,7 +8,7 @@
     <title>微聊 - EASYSWOOLE DEMO</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/amazeui/2.7.2/css/amazeui.min.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/layer/2.3/skin/layer.css">
-    <link rel="stylesheet" href="../static/css/main.css?v=120203">
+    <link rel="stylesheet" href="/css/main.css?v=120203">
     <script src="https://cdn.staticfile.org/vue/2.5.17-beta.0/vue.js"></script>
     <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/layer/2.3/layer.js"></script>
@@ -23,9 +23,9 @@
                 </div>
                 <div class="me_status">
                     <div class="me_username">
-                        <i class="am-icon am-icon-pencil" @click="changeName"></i>  
+                        <i class="am-icon am-icon-pencil" @click="changeName"></i> {{currentUser.username}}
                     </div>
-                    <div class="me_income"> </div>
+                    <div class="me_income">{{currentUser.intro}}</div>
                 </div>
                 <div class="times-icon"><i class="am-icon am-icon-times"></i></div>
             </div>
@@ -38,13 +38,13 @@
                         <img :src="user.avatar" alt="">
                     </div>
                     <div class="online_status">
-                        <div class="online_username"> </div>
+                        <div class="online_username">{{user.username}}</div>
                     </div>
                 </template>
             </div>
         </div>
         <div class="online_count">
-            <h6>车上乘客 <span></span> 位</h6>
+            <h6>车上乘客 <span>{{currentCount}}</span> 位</h6>
         </div>
     </div>
     <div class="talk_window">
@@ -60,23 +60,34 @@
                 <template v-for="chat in roomChat">
                     <template v-if="chat.type === 'tips'">
                         <div class="chat-tips">
-                            <span class="am-badge am-badge-primary am-radius"> </span></div>
+                            <span class="am-badge am-badge-primary am-radius">{{chat.content}}</span></div>
                     </template>
                     <template v-else>
                         <div v-if="chat.sendTime" class="chat-tips">
-                            <span class="am-radius" style="color: #666666"> </span>
+                            <span class="am-radius" style="color: #666666">{{chat.sendTime}}</span>
                         </div>
                         <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
                             <a href="#link-to-user-home">
+                                <img :src="chat.avatar" alt="" class="am-comment-avatar"
+                                     width="48" height="48"/>
                             </a>
                             <div class="am-comment-main">
                                 <header class="am-comment-hd">
                                     <div class="am-comment-meta">
-                                        <a href="#link-to-user" class="am-comment-author"> </a>
+                                        <a href="#link-to-user" class="am-comment-author">{{chat.username}}</a>
                                     </div>
                                 </header>
                                 <div class="am-comment-bd">
                                     <div class="bd-content">
+                                        <template v-if="chat.type === 'text'">
+                                            {{chat.content}}
+                                        </template>
+                                        <template v-else-if="chat.type === 'image'">
+                                            <img :src="chat.content" width="100%">
+                                        </template>
+                                        <template v-else>
+                                            {{chat.content}}
+                                        </template>
                                     </div>
                                 </div>
                             </div>
